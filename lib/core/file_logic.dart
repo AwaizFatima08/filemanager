@@ -76,6 +76,8 @@ List<FileEntry> sortEntries(List<FileEntry> entries, SortBy by, {bool ascending 
   final list = [...entries];
   list.sort((a, b) {
     if (a.isDir != b.isDir) return a.isDir ? -1 : 1;
+    // Folders have no size or type, so those sorts keep them A → Z.
+    if (a.isDir && (by == SortBy.size || by == SortBy.type)) return byName(a, b);
     final c = compare(a, b);
     return ascending ? c : -c;
   });

@@ -22,10 +22,10 @@ void main() {
       expect(sortEntries(items, SortBy.name).map((e) => e.name), ['alpha', 'Zed', 'a.mp3', 'b.txt', 'c.jpg']);
     });
 
-    test('descending keeps folders first', () {
+    test('descending keeps folders first, A to Z', () {
       expect(sortEntries(items, SortBy.size, ascending: false).map((e) => e.name), [
-        'Zed',
         'alpha',
+        'Zed',
         'a.mp3',
         'c.jpg',
         'b.txt',
