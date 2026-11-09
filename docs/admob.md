@@ -4,9 +4,9 @@ AdMob account: **homilabs.smc@gmail.com** (publisher `pub-2087846699268567`), sa
 
 | What | ID |
 |---|---|
-| App (Android) | _to be created in AdMob_ |
-| Interstitial `filemanager_paste_done` | _to be created_ |
-| Banner `filemanager_about_banner` | _to be created_ |
+| App (Android) | `ca-app-pub-2087846699268567~1747542883` |
+| Interstitial `filemanager_paste_done` | `ca-app-pub-2087846699268567/1617736287` |
+| Banner `filemanager_about_banner` | `ca-app-pub-2087846699268567/8959159358` |
 
 The ids are not secrets (they ship inside the APK), but they live in `.secrets/ad-units.env`
 (copy `.secrets/ad-units.env.example`) so a plain `flutter build` can never ship them by accident.
@@ -24,9 +24,10 @@ The ids are not secrets (they ship inside the APK), but they live in `.secrets/a
 - Release with ads: `bash scripts/build_release.sh` — reads `.secrets/ad-units.env`, refuses test ids, checks
   the APK manifest carries the real app id and the unit ids are compiled in.
 
+## Status
+- 2026-11-09: app and both ad units created by Claude in AdMob (not linked to a store yet, so ad serving is
+  limited, "Requires review"); ids are in `.secrets/ad-units.env` (gitignored; in the local backups).
+
 ## To do
-1. In AdMob (homilabs.smc@gmail.com): Apps → Add app → Android, "not on Play yet", name "File Manager".
-2. Add two ad units: Interstitial `filemanager_paste_done`, Banner `filemanager_about_banner`.
-3. Put the three ids in `.secrets/ad-units.env` and this table.
-4. After the Play listing is live: AdMob → app → **Add store** to link it (review takes a few days).
-5. `app-ads.txt` on homilabs.org already lists `pub-2087846699268567` (checked for Business Calculator, Oct 2026).
+1. After the Play listing is live: AdMob → app → **Add store** to link it (review takes a few days).
+2. `app-ads.txt` on homilabs.org already lists `pub-2087846699268567` (checked for Business Calculator, Oct 2026).
