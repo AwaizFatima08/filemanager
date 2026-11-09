@@ -37,7 +37,11 @@ class EntryTile extends StatelessWidget {
       title: Text(entry.name, maxLines: 1, overflow: TextOverflow.ellipsis),
       subtitle: entry.isDir
           ? _FolderSubtitle(entry: entry)
-          : Text('${formatSize(entry.size)} · ${formatDate(entry.modified)}', maxLines: 1),
+          : Text(
+              '${formatSize(entry.size)} · ${formatListDate(entry.modified)}',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
       trailing: selecting
           ? Checkbox(value: selected, onChanged: (_) => onTap())
           : PopupMenuButton<EntryAction>(
@@ -129,7 +133,7 @@ class _FolderSubtitleState extends State<_FolderSubtitle> {
       builder: (_, snap) {
         final n = snap.data;
         final items = n == null ? 'Folder' : '$n ${n == 1 ? 'item' : 'items'}';
-        return Text('$items · ${formatDate(widget.entry.modified)}', maxLines: 1);
+        return Text('$items · ${formatListDate(widget.entry.modified)}', maxLines: 1, overflow: TextOverflow.ellipsis);
       },
     );
   }

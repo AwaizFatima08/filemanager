@@ -93,6 +93,13 @@ void main() {
     expect(uniqueName('.nomedia', {'.nomedia'}), '.nomedia (1)');
   });
 
+  test('formatListDate is short', () {
+    final now = DateTime(2026, 11, 9, 15);
+    expect(formatListDate(DateTime(2026, 11, 9, 8, 5), now: now), 'Today 08:05');
+    expect(formatListDate(DateTime(2026, 10, 19), now: now), '19 Oct');
+    expect(formatListDate(DateTime(2024, 1, 15), now: now), '15 Jan 2024');
+  });
+
   test('formatSize', () {
     expect(formatSize(500), '500 B');
     expect(formatSize(1536), '1.5 KB');

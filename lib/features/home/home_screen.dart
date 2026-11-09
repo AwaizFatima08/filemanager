@@ -122,7 +122,10 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                       children: [
                         Icon(_quickIcon(label), size: 32, color: t.colorScheme.primary),
                         const SizedBox(height: 6),
-                        Text(label),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 6),
+                          child: FittedBox(fit: BoxFit.scaleDown, child: Text(label, maxLines: 1)),
+                        ),
                       ],
                     ),
                   ),

@@ -8,10 +8,11 @@ Future<void> showViewSheet(BuildContext context, ViewSettings settings) {
   return showModalBottomSheet<void>(
     context: context,
     showDragHandle: true,
+    isScrollControlled: true, // room for every option with large phone fonts
     builder: (_) => ListenableBuilder(
       listenable: settings,
       builder: (context, _) => SafeArea(
-        child: Padding(
+        child: SingleChildScrollView(
           padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
           child: Column(
             mainAxisSize: MainAxisSize.min,

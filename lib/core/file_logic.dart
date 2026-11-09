@@ -155,6 +155,15 @@ String formatSize(int bytes) {
 
 String formatDate(DateTime d) => DateFormat('d MMM yyyy, HH:mm').format(d);
 
+/// Short date for list rows, so it fits next to the size even with large text:
+/// "Today 14:05", "12 Oct" (this year), "3 Mar 2024".
+String formatListDate(DateTime d, {DateTime? now}) {
+  final n = now ?? DateTime.now();
+  if (d.year == n.year && d.month == n.month && d.day == n.day) return 'Today ${DateFormat('HH:mm').format(d)}';
+  if (d.year == n.year) return DateFormat('d MMM').format(d);
+  return DateFormat('d MMM yyyy').format(d);
+}
+
 /// A name in [existing] that does not clash: "photo.jpg" → "photo (1).jpg".
 String uniqueName(String name, Set<String> existing) {
   if (!existing.contains(name)) return name;

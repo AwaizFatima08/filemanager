@@ -149,8 +149,7 @@ class _BrowserScreenState extends State<BrowserScreen> {
 
   void _pick(List<String> paths, PasteMode mode) {
     _clipboard.set(paths, mode);
-    setState(_selected.clear);
-    _snack('Now open the folder to ${mode == PasteMode.copy ? 'copy' : 'move'} into, and tap "Paste here".');
+    setState(_selected.clear); // the paste bar now says what to do next
   }
 
   Future<void> _paste() async {
@@ -350,7 +349,11 @@ class _BrowserScreenState extends State<BrowserScreen> {
               Expanded(child: _list()),
             ],
           ),
-          bottomNavigationBar: _clipboard.isEmpty || _selecting ? null : _pasteBar(),
+          bottomNavigationBar: _selecting
+              ? _selectionActions()
+              : _clipboard.isEmpty
+              ? null
+              : _pasteBar(),
         ),
       ),
     );
@@ -359,6 +362,8 @@ class _BrowserScreenState extends State<BrowserScreen> {
   PreferredSizeWidget _normalBar() {
     return AppBar(
       leading: BackButton(onPressed: _handleBack),
+      titleSpacing: 0,
+      titleTextStyle: Theme.of(context).textTheme.titleLarge,
       title: _searching
           ? TextField(
               autofocus: true,
@@ -401,16 +406,9 @@ class _BrowserScreenState extends State<BrowserScreen> {
     final items = _selected.toList();
     return AppBar(
       leading: IconButton(tooltip: 'Cancel', icon: const Icon(Icons.close), onPressed: () => setState(_selected.clear)),
+      titleSpacing: 0,
       title: Text('${items.length} selected'),
       actions: [
-        IconButton(tooltip: 'Copy', icon: const Icon(Icons.copy), onPressed: () => _pick(items, PasteMode.copy)),
-        IconButton(
-          tooltip: 'Move',
-          icon: const Icon(Icons.drive_file_move_outline),
-          onPressed: () => _pick(items, PasteMode.move),
-        ),
-        IconButton(tooltip: 'Share', icon: const Icon(Icons.share), onPressed: () => _share(items)),
-        IconButton(tooltip: 'Delete', icon: const Icon(Icons.delete_outline), onPressed: () => _delete(items)),
         PopupMenuButton<String>(
           onSelected: (v) => switch (v) {
             'all' => setState(() => _selected.addAll(_visible.map((e) => e.path))),
@@ -426,6 +424,40 @@ class _BrowserScreenState extends State<BrowserScreen> {
     );
   }
 
+  /// Big labelled buttons for the selected items, so they fit with any font size.
+  Widget _selectionActions() {
+    final items = _selected.toList();
+    Widget action(IconData icon, String label, VoidCallback onTap) => Expanded(
+      child: InkWell(
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(icon),
+              const SizedBox(height: 4),
+              FittedBox(fit: BoxFit.scaleDown, child: Text(label, maxLines: 1)),
+            ],
+          ),
+        ),
+      ),
+    );
+    return SafeArea(
+      child: Material(
+        color: Theme.of(context).colorScheme.surfaceContainer,
+        child: Row(
+          children: [
+            action(Icons.copy, 'Copy', () => _pick(items, PasteMode.copy)),
+            action(Icons.drive_file_move_outline, 'Move', () => _pick(items, PasteMode.move)),
+            action(Icons.share, 'Share', () => _share(items)),
+            action(Icons.delete_outline, 'Delete', () => _delete(items)),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _pasteBar() {
     final n = _clipboard.paths.length;
     final verb = _clipboard.mode == PasteMode.copy ? 'copy' : 'move';
@@ -433,18 +465,30 @@ class _BrowserScreenState extends State<BrowserScreen> {
       child: Material(
         color: Theme.of(context).colorScheme.secondaryContainer,
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(16, 8, 8, 8),
-          child: Row(
+          padding: const EdgeInsets.fromLTRB(16, 10, 12, 8),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Icon(_clipboard.mode == PasteMode.copy ? Icons.copy : Icons.drive_file_move_outline),
-              const SizedBox(width: 12),
-              Expanded(child: Text('${_count(n)} to $verb')),
-              TextButton(onPressed: _clipboard.clear, child: const Text('Cancel')),
-              const SizedBox(width: 4),
-              FilledButton.icon(
-                onPressed: _busy ? null : _paste,
-                icon: const Icon(Icons.content_paste),
-                label: const Text('Paste here'),
+              Row(
+                children: [
+                  Icon(_clipboard.mode == PasteMode.copy ? Icons.copy : Icons.drive_file_move_outline),
+                  const SizedBox(width: 12),
+                  Expanded(child: Text('${_count(n)} to $verb. Open the folder you want, then paste.')),
+                ],
+              ),
+              const SizedBox(height: 8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(onPressed: _clipboard.clear, child: const Text('Cancel')),
+                  const SizedBox(width: 8),
+                  FilledButton.icon(
+                    onPressed: _busy ? null : _paste,
+                    icon: const Icon(Icons.content_paste),
+                    label: const Text('Paste here'),
+                  ),
+                ],
               ),
             ],
           ),

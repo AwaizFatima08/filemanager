@@ -25,6 +25,11 @@ class AdUnits {
   static bool get anyConfigured => banner != null || interstitial != null;
 }
 
+/// HomiLabs test phones (hashed device ids from the SDK's logcat hint). They get
+/// labelled test ads even in release builds, so our own testing never counts as
+/// real traffic. Oppo Reno14 F (CPH2743), added 2026-11-09.
+const testDeviceIds = ['E41E9C57CF74F7488344578B3BD4DB0F'];
+
 /// AdMob behind [AdService], with Google's User Messaging Platform for consent
 /// (EEA, UK and Switzerland). Ads are family-safe: content rated up to PG.
 class AdMobAdService implements AdService {
@@ -68,7 +73,7 @@ class AdMobAdService implements AdService {
       _canRequest = await ConsentInformation.instance.canRequestAds();
       if (!_canRequest) return;
       await MobileAds.instance.updateRequestConfiguration(
-        RequestConfiguration(maxAdContentRating: MaxAdContentRating.pg),
+        RequestConfiguration(maxAdContentRating: MaxAdContentRating.pg, testDeviceIds: testDeviceIds),
       );
       await MobileAds.instance.initialize();
       _loadInterstitial();
