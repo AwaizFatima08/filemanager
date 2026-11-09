@@ -11,6 +11,7 @@ cd "$(dirname "$0")/.."
 
 ENV=.secrets/ad-units.env
 [ -f "$ENV" ] || { echo "Missing $ENV"; exit 1; }
+[ -f android/key.properties ] || { echo "Missing android/key.properties (upload key)"; exit 1; }
 # shellcheck disable=SC1090
 source "$ENV"
 for v in ADMOB_APP_ID AD_BANNER_ID AD_INTERSTITIAL_ID; do
@@ -39,5 +40,10 @@ LIBAPP="$(unzip -p "$OUT/filemanager-${VERSION/+/-}.apk" lib/arm64-v8a/libapp.so
 for id in "$AD_BANNER_ID" "$AD_INTERSTITIAL_ID"; do
   grep -qF "$id" <<<"$LIBAPP" || { echo "FAIL: $id not found in libapp.so"; exit 1; }
 done
+# Must be signed with the upload key (.secrets/filemanager-upload.jks), never the debug key.
+APKSIGNER="$(ls -d "$HOME"/Android/Sdk/build-tools/*/ | tail -1)apksigner"
+CERT="$("$APKSIGNER" verify --print-certs "$OUT/filemanager-${VERSION/+/-}.apk" | grep -i 'SHA-256 digest')"
+grep -qi "bf5c6a0ee7245af4df724118b83be56c927188539e99c865749f652b34a2a6f1" <<<"$CERT" \
+  || { echo "FAIL: APK is not signed with the upload key ($CERT)"; exit 1; }
 (cd android && ./gradlew --stop >/dev/null 2>&1 || true)
 echo "Release ready in $OUT"
