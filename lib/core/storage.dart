@@ -35,17 +35,27 @@ Future<List<StorageRoot>> storageRoots() async {
 /// Common folders on internal storage, shown as shortcuts when they exist.
 const quickFolders = <(String, String)>[
   ('Download', 'Downloads'),
-  ('DCIM', 'Camera'),
+  ('DCIM/Camera', 'Camera'),
   ('Pictures', 'Pictures'),
   ('Documents', 'Documents'),
   ('Music', 'Music'),
   ('Movies', 'Videos'),
 ];
 
-Future<List<(String, String)>> existingQuickFolders() async => [
-  for (final (dir, label) in quickFolders)
-    if (await Directory(p.join(internalRoot, dir)).exists()) (p.join(internalRoot, dir), label),
-];
+/// A nested shortcut (DCIM/Camera) falls back to its parent (DCIM) when missing.
+Future<List<(String, String)>> existingQuickFolders() async {
+  final out = <(String, String)>[];
+  for (final (dir, label) in quickFolders) {
+    for (final candidate in {dir, p.split(dir).first}) {
+      final path = p.join(internalRoot, candidate);
+      if (await Directory(path).exists()) {
+        out.add((path, label));
+        break;
+      }
+    }
+  }
+  return out;
+}
 
 /// A file manager needs "All files access" on Android 11+, and the old storage
 /// permission on Android 10 and below.
