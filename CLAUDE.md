@@ -39,7 +39,7 @@ cd android && ./gradlew --stop
 - Play (9 Nov 2026): app "File Manager: Simple & Clear" id 4976020589375003309 on the HomiLabs org account. Store listing,
   graphics (store/), Tools category, all App content incl. All files access + Data safety filled by Claude; production
   release "2 (1.0.0)" (versionCode 2, upload-key signed) saved, 178 countries, managed publishing off.
-  Left to Homi: content rating (IARC) and "Send for review". After approval: AdMob "Add store", website card → Play link.
+  Content rating done by Homi; sent for review by Homi 9 Nov 2026. After approval: AdMob "Add store", website card → Play link.
 - Upload key: .secrets/filemanager-upload.jks (+ copy in ../filemanager-secrets/), SHA-256 BF:5C:6A…A2:A6:F1.
   Next versionCode ≥ 3. open_filex's READ_MEDIA_* permissions are removed in the manifest (tools:node="remove").
 - Bundle uploads: the browser pane can't fetch from localhost; Homi drags the .aab into Play Console.
