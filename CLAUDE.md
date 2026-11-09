@@ -29,3 +29,11 @@ cd android && ./gradlew --stop
 - `MANAGE_EXTERNAL_STORAGE`: Play allows it for file managers but asks for a declaration form at upload.
 - Android 11+ blocks `Android/data` and `Android/obb`; the browser shows a message instead of an error.
 - Release signing still uses the debug key (no upload keystore yet) — create one before the first Play upload.
+
+## Status (9 Nov 2026)
+- AdMob app `~1747542883` + 2 units created (docs/admob.md); real-ad release `releases/v1.0.0-1/` (debug-signed).
+- Tested on Oppo Reno14 F (CPH2743, Android 16, large font, wireless adb): browse, search, sort, group,
+  copy/move (no overwrite), rename, delete, share, real interstitial after paste. Oppo is an AdMob test device
+  (`testDeviceIds` in lib/ads/admob_ad_service.dart). Other sessions also test on the Oppo: ask before using it.
+- tools.homilabs.org: card + privacy#filemanager + terms#filemanager live (source web/, merged into homilabs_tools).
+- Before Play: upload keystore, "All files access" declaration, Data safety (ads), then AdMob "Add store".
