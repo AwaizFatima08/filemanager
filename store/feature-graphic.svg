@@ -15,7 +15,7 @@
     <rect x="58" y="128" width="40" height="8" rx="4" fill="#F2A33A"/>
   </g>
   <text x="470" y="225" font-family="Noto Sans" font-weight="700" font-size="68" fill="#FFFFFF">File Manager</text>
-  <text x="472" y="285" font-family="Noto Sans" font-size="32" fill="#DCE9FB">Your phone's files, simply sorted</text>
+  <text x="472" y="285" font-family="Noto Sans" font-size="32" fill="#DCE9FB">Simple &amp; Clear: your files, sorted</text>
   <g font-family="Noto Sans" font-size="24" fill="#FFFFFF">
     <rect x="472" y="320" width="118" height="44" rx="22" fill="#FFFFFF" opacity="0.16"/><text x="531" y="350" text-anchor="middle">Sort</text>
     <rect x="602" y="320" width="130" height="44" rx="22" fill="#FFFFFF" opacity="0.16"/><text x="667" y="350" text-anchor="middle">Group</text>

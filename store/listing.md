@@ -1,13 +1,9 @@
 # Play Store listing — File Manager (com.homilabs.filemanager)
 
-Draft 9 Nov 2026. Homi picks the name.
+Draft 9 Nov 2026. Name chosen by Homi: **File Manager: Simple & Clear**.
 
 ## App name (max 30 characters)
-Options (recommended first):
-1. `File Manager: Simple & Clear` (28)
-2. `HomiLabs File Manager` (21)
-3. `Easy File Manager - Sort Files` (30)
-4. `File Manager` (12) — very generic; hard to find in search
+`File Manager: Simple & Clear` (28). The launcher label on the phone stays "File Manager".
 
 ## Short description (max 80)
 `Browse, sort and group your files. Copy, move and share them in a few taps.` (75)
